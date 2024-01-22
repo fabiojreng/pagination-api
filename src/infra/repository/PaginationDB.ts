@@ -12,7 +12,7 @@ export default class PaginationDB implements PaginationRepository {
     try {
       await this.db.connect();
       const query =
-        "SELECT * FROM repository.docs WHERE ?? LIKE ? AND status = 'available' LIMIT 5 OFFSET ?";
+        "SELECT * FROM docs WHERE ?? LIKE ? AND status = 'available' LIMIT 5 OFFSET ?";
       const offset = page * 5;
       const output = await this.db.query(query, [type, `%${value}%`, offset]);
       return output[0];

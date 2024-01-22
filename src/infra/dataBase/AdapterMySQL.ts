@@ -13,9 +13,10 @@ export default class AdapterMySQL implements IDatabaseConnection {
       this.connection = mysql.createPool({
         //connectionLimit: 10,
         host: process.env.MYSQL_HOST,
+        port: Number(process.env.PORT),
         user: process.env.MYSQL_USER,
         password: process.env.MYSQL_PASSWORD,
-        port: Number(process.env.PORT),
+        database: process.env.MYSQL_DATABASE,
       });
       console.log("Conectado MySQL");
     } catch (error) {
