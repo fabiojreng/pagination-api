@@ -1,18 +1,18 @@
-import { FindByAuthorUseCase } from "../../application/useCases/FindByAuthorUseCase";
+import { FilterDocumentsUseCase } from "../../application/useCases/FilterDocumentsUseCase";
 import HttpServer from "../http/HttpServer";
 
 export default class MainController {
   constructor(
-    private findByAuthor: FindByAuthorUseCase,
+    private filterDocuments: FilterDocumentsUseCase,
     private server: HttpServer
   ) {
     server.register(
       "get",
-      "/search/author",
+      "/search",
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async function (query: any) {
-        const { author, page } = query;
-        const documents = await findByAuthor.execute(author, page);
+        const { type, value, page } = query;
+        const documents = await filterDocuments.execute(type, value, page);
         return { statusCode: 200, body: documents };
       }
     );
