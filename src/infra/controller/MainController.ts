@@ -1,13 +1,11 @@
-import CountDocumentsUseCase from "../../application/useCases/CountDocumentsUseCase";
-import { FilterDocumentsUseCase } from "../../application/useCases/FilterDocumentsUseCase";
-import getDocumentByIdUseCase from "../../application/useCases/GetDocumentByIdUseCase";
+import UseCase from "../../application/useCases/UseCase";
 import HttpServer from "../http/HttpServer";
 
 export default class MainController {
   constructor(
-    private filterDocuments: FilterDocumentsUseCase,
-    private getById: getDocumentByIdUseCase,
-    private countDocuments: CountDocumentsUseCase,
+    private filterDocuments: UseCase,
+    private getById: UseCase,
+    private countDocuments: UseCase,
     private server: HttpServer
   ) {
     server.register(
@@ -15,8 +13,7 @@ export default class MainController {
       "/search",
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async function (req: any) {
-        const { type, value, page } = req.query;
-        const documents = await filterDocuments.execute(type, value, page);
+        const documents = await filterDocuments.execute(req.query);
         return { statusCode: 200, body: documents };
       }
     );
@@ -34,8 +31,7 @@ export default class MainController {
       "/countDocuments",
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async function (req: any) {
-        const { type, page } = req.query;
-        const document = await countDocuments.execute(type, page);
+        const document = await countDocuments.execute(req.query);
         return { statusCode: 200, body: document };
       }
     );
