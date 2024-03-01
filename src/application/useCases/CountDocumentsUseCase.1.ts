@@ -1,6 +1,7 @@
 import MissingParamError from "../../domain/entities/Errors/MissingParamError";
 import NotFoundError from "../../domain/entities/Errors/NotFoundError";
 import {
+  noContent,
   notFound,
   serverError,
   success,
@@ -17,8 +18,8 @@ export default class CountDocumentsUseCase implements UseCase {
       if (!permittedTypes.includes(params.type))
         return notFound(new MissingParamError("type_document or area_CNPQ"));
       const data = await this.repository.countDocuments(params.type);
-      if (!data) return notFound(new NotFoundError());
-      return success({ message: "", data: data });
+      if (!data) if (!data) return noContent();
+      return success({ message: "Number of documents", data: data });
     } catch (error) {
       if (error instanceof Error) return serverError(error);
       return serverError(new Error("Unexpected Error"));

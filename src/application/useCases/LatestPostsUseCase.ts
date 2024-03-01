@@ -1,6 +1,6 @@
 import NotFoundError from "../../domain/entities/Errors/NotFoundError";
 import {
-  notFound,
+  noContent,
   serverError,
   success,
 } from "../../domain/entities/Helpers/HttpHelper";
@@ -13,8 +13,8 @@ export default class LatestPostsUseCase implements UseCase {
   async execute(): Promise<HttpResponse> {
     try {
       const data = await this.repository.latestPosts();
-      if (!data) return notFound(new NotFoundError());
-      return success({ message: "", data: data });
+      if (!data) if (!data) return noContent();
+      return success({ message: "Latest posts", data: data });
     } catch (error) {
       if (error instanceof Error) return serverError(error);
       return serverError(new Error("Unexpected Error"));
