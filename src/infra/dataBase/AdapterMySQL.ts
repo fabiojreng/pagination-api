@@ -18,7 +18,6 @@ export default class AdapterMySQL implements IDatabaseConnection {
         password: process.env.MYSQL_PASSWORD,
         database: process.env.MYSQL_DATABASE,
       });
-      console.log("Conectado MySQL");
     } catch (error) {
       if (error instanceof Error) throw new Error(error.message);
       throw new Error("Não foi possível conectar");
@@ -27,7 +26,6 @@ export default class AdapterMySQL implements IDatabaseConnection {
 
   async close(): Promise<void> {
     await this.connection.end();
-    console.log("Fechando MySQL");
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async query(statement: string, params: any): Promise<any> {
