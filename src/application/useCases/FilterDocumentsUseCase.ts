@@ -1,6 +1,5 @@
 import InvalidParamError from "../../domain/entities/Errors/InvalidParamError";
 import MissingParamError from "../../domain/entities/Errors/MissingParamError";
-import NotFoundError from "../../domain/entities/Errors/NotFoundError";
 import {
   noContent,
   notFound,

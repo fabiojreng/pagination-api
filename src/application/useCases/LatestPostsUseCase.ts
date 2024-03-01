@@ -1,4 +1,3 @@
-import NotFoundError from "../../domain/entities/Errors/NotFoundError";
 import {
   noContent,
   serverError,
