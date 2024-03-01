@@ -1,3 +1,4 @@
+import CountDocumentsUseCase from "./application/useCases/CountDocumentsUseCase";
 import { FilterDocumentsUseCase } from "./application/useCases/FilterDocumentsUseCase";
 import getDocumentByIdUseCase from "./application/useCases/GetDocumentByIdUseCase";
 import MainController from "./infra/controller/MainController";
@@ -10,7 +11,8 @@ const connection = new AdapterMySQL();
 const mysql = new PaginationDB(connection);
 const filterDocuments = new FilterDocumentsUseCase(mysql);
 const getById = new getDocumentByIdUseCase(mysql);
+const countDocuments = new CountDocumentsUseCase(mysql);
 
-new MainController(filterDocuments, getById, server);
+new MainController(filterDocuments, getById, countDocuments, server);
 
 server.listen(3000);
