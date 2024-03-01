@@ -6,34 +6,24 @@ export default class MainController {
     private filterDocuments: UseCase,
     private getById: UseCase,
     private countDocuments: UseCase,
+    private latestPosts: UseCase,
     private server: HttpServer
   ) {
-    server.register(
-      "get",
-      "/search",
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      async function (req: any) {
-        const documents = await filterDocuments.execute(req.query);
-        return { statusCode: 200, body: documents };
-      }
-    );
-    server.register(
-      "get",
-      "/getById/:id",
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      async function (req: any) {
-        const document = await getById.execute(req.params.id);
-        return { statusCode: 200, body: document };
-      }
-    );
-    server.register(
-      "get",
-      "/countDocuments",
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      async function (req: any) {
-        const document = await countDocuments.execute(req.query);
-        return { statusCode: 200, body: document };
-      }
-    );
+    this.server?.register("get", "/search", async (req: any) => {
+      const output = await this.filterDocuments.execute(req.query);
+      return output;
+    });
+    this.server?.register("get", "/getById/:id", async (req: any) => {
+      const output = await this.getById.execute(req.params.id);
+      return output;
+    });
+    this.server?.register("get", "/countDocuments", async (req: any) => {
+      const output = await this.countDocuments.execute(req.query);
+      return output;
+    });
+    this.server?.register("get", "/latestPosts", async () => {
+      const output = await this.latestPosts.execute({});
+      return output;
+    });
   }
 }

@@ -1,4 +1,5 @@
+import HttpResponse from "../../domain/entities/Protocols/HttpResponse";
+
 export default interface UseCase {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  execute(input: any): Promise<any>;
+  execute(params: any): Promise<HttpResponse>;
 }

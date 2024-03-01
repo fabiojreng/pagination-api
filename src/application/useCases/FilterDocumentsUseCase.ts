@@ -1,23 +1,32 @@
+import MissingParamError from "../../domain/entities/Errors/MissingParamError";
+import NotFoundError from "../../domain/entities/Errors/NotFoundError";
+import {
+  notFound,
+  serverError,
+  success,
+} from "../../domain/entities/Helpers/HttpHelper";
+import HttpResponse from "../../domain/entities/Protocols/HttpResponse";
 import PaginationRepository from "../repository/PaginationRepository";
 import UseCase from "./UseCase";
 
-export class FilterDocumentsUseCase implements UseCase {
+export default class FilterDocumentsUseCase implements UseCase {
   constructor(private repository: PaginationRepository) {}
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async execute(params: Input): Promise<any> {
+  async execute(params: Input): Promise<HttpResponse> {
     try {
-      // Permitir apenas types: author, date_publication, type_document, area_CNPQ
-
-      const pag = Number(params.page);
-      return await this.repository.filterDocuments(
+      const permittedTypes = ["author", "type_document", "area_CNPQ"];
+      if (!permittedTypes.includes(params.type))
+        return notFound(new MissingParamError(permittedTypes.toString()));
+      if (!params.value) return notFound(new MissingParamError("value"));
+      const data = await this.repository.filterDocuments(
         params.type,
         params.value,
-        pag
+        Number(params.page)
       );
+      if (!data) return notFound(new NotFoundError());
+      return success({ message: "", data: data });
     } catch (error) {
-      if (error instanceof Error) throw new Error(error.message);
-      throw new Error("");
+      if (error instanceof Error) return serverError(error);
+      return serverError(new Error("Unexpected Error"));
     }
   }
 }
