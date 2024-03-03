@@ -10,17 +10,16 @@ export default class PaginationDB implements PaginationRepository {
     page: number
   ): Promise<any> {
     await this.db.connect();
-    // const [qtdDocuments] = await this.db.query(
-    //   "SELECT COUNT(*) AS quantidade FROM documents WHERE status = 'available'",
-    //   []
-    // );
-    // console.log(qtdDocuments);
+    const [qtdDocuments] = await this.db.query(
+      "SELECT COUNT(*) AS quantidade FROM documents WHERE status = 'available' AND ?? LIKE ?",
+      [type, `%${value}%`]
+    );
     const query =
       "SELECT d.*, f.file, f.file_name, f.file_size FROM documents d LEFT JOIN files f ON d.id = f.id_document WHERE ?? LIKE ? AND status = 'available' LIMIT 5 OFFSET ?;";
     const offset = page * 5;
     const [output] = await this.db.query(query, [type, `%${value}%`, offset]);
     await this.db.close();
-    return output;
+    return { documents: output, qtdDocuments: qtdDocuments };
   }
 
   async filterDocumentById(id: string): Promise<any> {
