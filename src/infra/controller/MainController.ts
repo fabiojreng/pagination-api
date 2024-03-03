@@ -14,7 +14,7 @@ export default class MainController {
       return output;
     });
     this.server?.register("get", "/get-by-Id/:id", async (req: any) => {
-      const output = await this.getById.execute(req.params.id);
+      const output = await this.getById.execute(req.params);
       return output;
     });
     this.server?.register("get", "/count-documents", async (req: any) => {

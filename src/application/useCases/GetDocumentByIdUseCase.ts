@@ -15,7 +15,7 @@ export default class getDocumentByIdUseCase implements UseCase {
     try {
       if (!params.id) return notFound(new MissingParamError("id"));
       const data = await this.repository.filterDocumentById(params.id);
-      if (!data) if (!data) return notFound(new NotFoundError());
+      if (!data) return notFound(new NotFoundError());
       return success({ message: "Document", data: data });
     } catch (error) {
       if (error instanceof Error) return serverError(error);

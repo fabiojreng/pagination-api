@@ -12,7 +12,7 @@ export default class LatestPostsUseCase implements UseCase {
   async execute(): Promise<HttpResponse> {
     try {
       const data = await this.repository.latestPosts();
-      if (!data) if (!data) return noContent();
+      if (!data) return noContent();
       return success({ message: "Latest posts", data: data });
     } catch (error) {
       if (error instanceof Error) return serverError(error);
